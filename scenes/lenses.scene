@@ -1,0 +1,7 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Lenses" width=160 height=100 exposure=-1
+
+shape lens pos=40,50 angle=0 material=glass r=48 t=13
+shape lens pos=104,50 angle=0 material=glass r=20 t=9
+shape arc pos=152,50 angle=180 material=mirror r=60 span=60
+light beam pos=8,50 angle=0 power=1.2 color=white width=34

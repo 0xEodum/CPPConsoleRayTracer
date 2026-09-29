@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux GCC
+            os: ubuntu-latest
+            cxx: g++
+          - name: Linux Clang
+            os: ubuntu-latest
+            cxx: clang++
+          - name: macOS Clang
+            os: macos-latest
+            cxx: clang++
+          - name: Windows MSVC
+            os: windows-latest
+            cxx: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        shell: bash
+        run: |
+          if [ -n "${{ matrix.cxx }}" ]; then export CXX=${{ matrix.cxx }}; fi
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCRT_WARNINGS_AS_ERRORS=ON
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Unit tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Smoke test (headless renders)
+        shell: bash
+        run: |
+          exe=build/raytracer
+          [ -f build/Release/raytracer.exe ] && exe=build/Release/raytracer.exe
+          "$exe" --version
+          "$exe" list
+          "$exe" render2d --scene dispersion --width 320 --rays 200000 -o smoke2d.png
+          "$exe" render2d --scene scenes/periscope.scene --width 320 --rays 200000 -o smoke-file.png
+          "$exe" render3d --scene cornell --width 160 --height 120 --spp 4 -o smoke3d.png
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.os == 'windows-latest'
+        with:
+          name: raytracer-windows
+          path: build/Release/raytracer.exe
+
+  sanitizers:
+    name: Linux ASan + UBSan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=all"
+          cmake --build build --parallel
+      - name: Unit tests
+        run: ctest --test-dir build --output-on-failure
+
+  mingw:
+    name: Windows MinGW (cross-compiled)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MinGW-w64
+        run: sudo apt-get update && sudo apt-get install -y g++-mingw-w64-x86-64-posix
+      - name: Build
+        run: |
+          cat > mingw.cmake <<'TOOLCHAIN'
+          set(CMAKE_SYSTEM_NAME Windows)
+          set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++-posix)
+          TOOLCHAIN
+          cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=mingw.cmake -DCMAKE_BUILD_TYPE=Release -DCRT_WARNINGS_AS_ERRORS=ON
+          cmake --build build --parallel

@@ -1,0 +1,20 @@
+# Console Ray Tracer - 2D optics scene
+# A hand-written example: a periscope made of two 45-degree mirrors, a laser and a lamp.
+# Load it with:  raytracer --scene scenes/periscope.scene
+scene name="Periscope" width=160 height=100 exposure=-3.5
+
+# Tube walls (absorbing) with an opening at the top-left and at the bottom-right.
+shape wall pos=40,57.5 angle=90 material=absorber len=55
+shape wall pos=60,42.5 angle=90 material=absorber len=55
+shape wall pos=50,12 angle=0 material=absorber len=20
+shape wall pos=50,90 angle=0 material=absorber len=20
+
+# The two mirrors, both at 45 degrees.
+shape wall pos=50,20 angle=45 material=mirror len=16
+shape wall pos=50,80 angle=45 material=mirror len=16
+
+# A screen that catches the light leaving the periscope.
+shape wall pos=150,80 angle=90 material=matte len=30
+
+light laser pos=8,20 angle=0 power=0.6 color=green
+light spot pos=8,20 angle=0 power=0.5 color=warm spread=10
