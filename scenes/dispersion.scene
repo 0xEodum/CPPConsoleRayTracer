@@ -1,0 +1,6 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Dispersion" width=160 height=100 exposure=0
+
+shape prism pos=72,50 angle=0 material=prism side=34
+shape wall pos=142,78 angle=90 material=matte len=44
+light beam pos=18,69 angle=-28 power=1 color=white width=3

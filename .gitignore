@@ -1,0 +1,11 @@
+/build*/
+/out/
+/.vs/
+/.vscode/
+/.idea/
+/cmake-build-*/
+compile_commands.json
+*.png
+!docs/images/*.png
+*.scene
+!scenes/*.scene

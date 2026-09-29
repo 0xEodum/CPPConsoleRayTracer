@@ -1,0 +1,8 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Total internal reflection" width=160 height=100 exposure=0
+
+shape box pos=86,48 angle=-6 material=glass w=130 h=7
+shape circle pos=60,82 angle=0 material=water r=10
+light laser pos=10,66 angle=-25 power=0.8 color=green
+light laser pos=10,36 angle=12 power=0.8 color=red
+light laser pos=28,95 angle=-20 power=0.8 color=violet

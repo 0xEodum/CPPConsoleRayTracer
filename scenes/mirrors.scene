@@ -1,0 +1,13 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Mirrors & lasers" width=160 height=100 exposure=0
+
+shape wall pos=60,55 angle=60 material=mirror len=22
+shape wall pos=100,30 angle=-30 material=mirror len=22
+shape wall pos=125,70 angle=20 material=gold len=26
+shape box pos=80,80 angle=-10 material=brushed w=26 h=6
+shape circle pos=95,55 angle=0 material=diamond r=9
+shape box pos=30,30 angle=45 material=matte-blue w=12 h=12
+light laser pos=10,90 angle=-35 power=0.6 color=red
+light laser pos=10,10 angle=25 power=0.6 color=green
+light laser pos=150,92 angle=-150 power=0.6 color=blue
+light spot pos=150,8 angle=150 power=0.5 color=daylight spread=30

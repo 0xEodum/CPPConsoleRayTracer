@@ -1,0 +1,11 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Room with caustics" width=160 height=100 exposure=-1.5
+
+shape wall pos=4,50 angle=90 material=matte-red len=92
+shape wall pos=156,50 angle=90 material=matte-green len=92
+shape wall pos=80,96 angle=0 material=matte len=152
+shape wall pos=80,4 angle=0 material=matte len=152
+shape circle pos=56,70 angle=0 material=glass r=13
+shape prism pos=112,75 angle=0 material=diamond side=20
+shape box pos=84,84 angle=15 material=mirror w=8 h=16
+light point pos=80,18 angle=0 power=1 color=white

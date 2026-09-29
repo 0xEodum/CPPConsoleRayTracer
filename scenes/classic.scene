@@ -1,0 +1,10 @@
+# Console Ray Tracer - 2D optics scene
+scene name="Classic (v1 tribute)" width=160 height=100 exposure=0
+
+shape box pos=50,30 angle=0 material=mirror w=20 h=12
+shape box pos=110,30 angle=0 material=absorber w=20 h=12
+shape box pos=50,72 angle=0 material=matte w=20 h=12
+shape box pos=110,72 angle=0 material=prism w=20 h=12
+light point pos=80,50 angle=0 power=1 color=white
+light spot pos=12,50 angle=0 power=0.6 color=daylight spread=45
+light laser pos=150,92 angle=-140 power=0.4 color=red
